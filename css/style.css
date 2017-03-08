@@ -1,0 +1,233 @@
+body{
+    overflow: hidden;
+}
+h1{
+    font-size: 28px;
+    font-family: 'Russo One', sans-serif;
+    margin-top: 10px;
+}
+.container{
+  #margin-top: 50px;
+  #padding-top: 5px;
+  text-align: center;
+  width: 960px;
+    height: 700px;
+  background-color: #b3e6ff;
+  #border-radius: 20px;
+  #box-shadow: 4px 8px #008000;
+  }
+div.row{
+   # border:1px solid;
+    #border-color: burlywood
+}
+div.progress{
+    height: 40px;
+}
+#wellId, #wellSmallId{
+  background-color: whitesmoke;
+    color: dimgrey;
+  padding-left: 4px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  #width:700px;
+  float: none;
+  margin: 0 auto;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 25px;
+  letter-spacing: 1px;
+    box-shadow: 2px 2px grey;
+
+
+}
+#well2Id{
+  background-color: grey;
+  padding-left: 4px;
+  padding-top: 20px;
+  #padding-bottom: 20px;
+  width:700px;
+  float: none;
+  margin: 0 auto;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 30px;
+  letter-spacing: 3px;
+  color: white;
+  opacity: 0.5;
+
+}
+.smallstuff{
+  padding-left: 10px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 25px;
+  letter-spacing: 1px;
+    position:relative;
+    left: -40px;
+    color: darkgrey;
+}
+#spanDoneCorrectId{
+  color:pink;
+  background-color: white;
+}
+#spanDoneWrongId{
+  color:ghostwhite;
+  background-color: orangered;
+}
+#spanThisId{
+  color:darkslateblue;
+  text-decoration: underline;
+}
+#well5Id{
+  background-color: grey;
+  padding-left: 4px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  width:880px;
+  float: none;
+  margin: 0 auto;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  letter-spacing: 3px;
+  color: white;
+  opacity: 1;
+
+}
+#spanScaleId{
+  color:white;
+  background-color: white;
+}
+#spanScaleLowId{
+  color:pink;
+  background-color: pink;
+  opacity: 0.2;
+}
+#spanHoldId{
+  color:blue;
+  background-color: blue;
+}
+#spanHoldLowId{
+  color:blue;
+  background-color: blue;
+  opacity: 0.3;
+}
+.input-group{
+  #width: 500px;
+  #margin-bottom:20px
+}
+#progressWellId{
+ background-color: lightgray;
+  padding-left: 4px;
+  padding-top: 10px;
+  #padding-bottom: 20px;
+  width:790px;
+    height: 60px;
+  float: none;
+  margin: 0 auto;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  letter-spacing: 3px;
+  color: white;
+  opacity: 1;
+ box-shadow: 2px 2px grey;
+}
+#keyboardIdParent{
+    width:800px;
+    height: 270px;
+    #position: relative;
+    #border: 2px solid black;
+}
+#keyboardId{
+    width: 700px;
+    position: relative;
+    left: 70px;
+    #border: 2px solid black;
+}
+div#keyboardId button{
+    height: 45px;
+    margin-bottom:3px;
+    width: 45px;
+    border-radius: 6px;
+    background: white;
+    #outline-color:aqua;
+}
+div#keyboardId button:active {
+  #background-color: #3e8e41;
+  #box-shadow: 0 5px #666;
+  transform: translateY(3px);
+}
+
+#button_backspace_Id, #button_Tab_Id{
+    width: 65px !important
+}
+#button_Caps_Id{
+    width: 80px !important
+}
+#button_Enter_Id{
+    width: 78px !important
+}
+#button_shiftleft_Id, #button_shiftright_Id{
+    width: 104px !important
+}
+#button_32_Id{
+    width: 304px !important
+}
+#button_altright_Id, #button_altleft_Id, #button_controlright_Id, #button_controlleft_Id{
+    width: 95px !important
+}
+#fingersId{
+    position: relative;
+    #left: 50px;
+    top: -270px;
+    opacity:0.65;
+
+}
+#gameCommentId{
+   #border:1px solid black;
+}
+#sidebarId{
+    #overflow: schroll;
+    background:#66ccff;
+    #color: white;
+    height: 700px;
+
+}
+#sidebarId *{
+    
+    color: white;
+}
+
+#animalShiftId{
+    position: relative;
+    right: 21px;
+    top: 3px;
+    #border:2px solid grey;
+    border-radius: 5px;
+    box-shadow: 2px 2px grey;
+
+
+}
+#buttonSetRecomId{
+  font-family: 'Roboto', sans-serif;
+}
+#Comment1{
+    margin-top: 10px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+}
+#gameCommentId{
+    font-family: 'Ruslan Display', cursive;
+    font-size: 24px;
+    color: darkslategrey;
+    margin-top: 5px;
+}
+#boTT{
+    font-size: 14px;
+     font-family: 'Roboto', sans-serif;
+}
+#YarId{
+  font-family: 'Neucha', cursive;
+    font-size: 20px;
+    color: darkblue;
+
+}
+

@@ -2,67 +2,42 @@ body{
     overflow: hidden;
 }
 h1{
-    font-size: 28px;
+    font-size: 30px;
     font-family: 'Russo One', sans-serif;
     margin-top: 10px;
+    position:relative;
+    right: 5px;
+    bottom: 5px;
 }
 .container{
-  #margin-top: 50px;
-  #padding-top: 5px;
   text-align: center;
   width: 960px;
     height: 700px;
   background-color: #b3e6ff;
-  #border-radius: 20px;
-  #box-shadow: 4px 8px #008000;
   }
-div.row{
-   # border:1px solid;
-    #border-color: burlywood
-}
 div.progress{
     height: 40px;
 }
-#wellId, #wellSmallId{
-  background-color: whitesmoke;
+#wellCSSId{
+    background-color: whitesmoke;
     color: dimgrey;
-  padding-left: 4px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  #width:700px;
-  float: none;
-  margin: 0 auto;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 25px;
-  letter-spacing: 1px;
+    padding-left: 4px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width:710px;
+    float: none;
+    margin: 0 auto;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 25px;
+    letter-spacing: 1px;
     box-shadow: 2px 2px grey;
-
-
 }
-#well2Id{
-  background-color: grey;
-  padding-left: 4px;
-  padding-top: 20px;
-  #padding-bottom: 20px;
-  width:700px;
-  float: none;
-  margin: 0 auto;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 30px;
-  letter-spacing: 3px;
-  color: white;
-  opacity: 0.5;
-
-}
-.smallstuff{
-  padding-left: 10px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 25px;
-  letter-spacing: 1px;
-    position:relative;
-    left: -40px;
+#smallstuff{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 25px;
+    letter-spacing: 1px;
     color: darkgrey;
 }
 #spanDoneCorrectId{
@@ -77,70 +52,29 @@ div.progress{
   color:darkslateblue;
   text-decoration: underline;
 }
-#well5Id{
-  background-color: grey;
-  padding-left: 4px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  width:880px;
-  float: none;
-  margin: 0 auto;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 20px;
-  letter-spacing: 3px;
-  color: white;
-  opacity: 1;
-
-}
-#spanScaleId{
-  color:white;
-  background-color: white;
-}
-#spanScaleLowId{
-  color:pink;
-  background-color: pink;
-  opacity: 0.2;
-}
-#spanHoldId{
-  color:blue;
-  background-color: blue;
-}
-#spanHoldLowId{
-  color:blue;
-  background-color: blue;
-  opacity: 0.3;
-}
-.input-group{
-  #width: 500px;
-  #margin-bottom:20px
-}
 #progressWellId{
- background-color: lightgray;
-  padding-left: 4px;
-  padding-top: 10px;
-  #padding-bottom: 20px;
-  width:790px;
+    background-color: lightgray;
+    padding-left: 4px;
+    padding-top: 10px;
+    width:710px;
     height: 60px;
-  float: none;
-  margin: 0 auto;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 20px;
-  letter-spacing: 3px;
-  color: white;
-  opacity: 1;
- box-shadow: 2px 2px grey;
+    float: none;
+    margin: 0 auto;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    letter-spacing: 3px;
+    color: white;
+    opacity: 1;
+    box-shadow: 2px 2px grey;
 }
 #keyboardIdParent{
     width:800px;
     height: 270px;
-    #position: relative;
-    #border: 2px solid black;
 }
 #keyboardId{
     width: 700px;
     position: relative;
     left: 70px;
-    #border: 2px solid black;
 }
 div#keyboardId button{
     height: 45px;
@@ -148,14 +82,10 @@ div#keyboardId button{
     width: 45px;
     border-radius: 6px;
     background: white;
-    #outline-color:aqua;
 }
 div#keyboardId button:active {
-  #background-color: #3e8e41;
-  #box-shadow: 0 5px #666;
   transform: translateY(3px);
 }
-
 #button_backspace_Id, #button_Tab_Id{
     width: 65px !important
 }
@@ -176,23 +106,15 @@ div#keyboardId button:active {
 }
 #fingersId{
     position: relative;
-    #left: 50px;
     top: -270px;
     opacity:0.65;
 
 }
-#gameCommentId{
-   #border:1px solid black;
-}
 #sidebarId{
-    #overflow: schroll;
     background:#66ccff;
-    #color: white;
     height: 700px;
-
 }
-#sidebarId *{
-    
+#sidebarId *{  
     color: white;
 }
 
@@ -200,17 +122,19 @@ div#keyboardId button:active {
     position: relative;
     right: 21px;
     top: 3px;
-    #border:2px solid grey;
     border-radius: 5px;
     box-shadow: 2px 2px grey;
-
-
 }
 #buttonSetRecomId{
   font-family: 'Roboto', sans-serif;
+    height: 55px;
+    padding-top: 0px;
+    background: #00bfff !important;
 }
 #Comment1{
     margin-top: 10px;
+    margin-left: 30px;
+    width: 710px;
     font-family: 'Roboto', sans-serif;
     font-size: 15px;
 }
@@ -230,4 +154,19 @@ div#keyboardId button:active {
     color: darkblue;
 
 }
-
+#centerColAdjId{
+   position:relative;
+    right: 15px
+}
+#headerRowId{
+    padding-top: 5px;
+    background: #4dd2ff;
+    height: 120px;
+}
+#urovniId{
+    border: 1px solid #0099cc;
+    background: #00bfff;
+}
+#level1Id,#level2Id,#level3Id{
+    border: 1px solid #00bfff;
+}

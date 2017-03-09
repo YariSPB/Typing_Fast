@@ -1,6 +1,7 @@
-// https://github.com/YariSPB/Speed-typing-lesson
-$(document).ready(function () {
 
+$(document).ready(function () {
+// textSTR = это массив с уровнями игры.
+    // в каждом уровне есть несколько строк, которые крутяться по кругу, пока уровень не пройден.
   var textStr = [ // массив с печатныеми заданиями
                   [ // level 1
                     ["ff jjjj ff jj fff jjj fj fj jjf fff jj"],
@@ -19,439 +20,325 @@ $(document).ready(function () {
                 ];
   var pressCounter= 0; // счетчик печати символов в пределах одной строки
   var lineNum = 0; // счетчик строки задания
+    // заполняем страничку данными первого уровня игры
   $("#wellId").html(textStr[0][0][0]);
   $("#well2Id").html(textStr[0][1][0]);
-  $(".smallstuff").html(textStr[0][1][0].slice(0,4));
+  $("#smallstuff").html(textStr[0][1][0].slice(0,4));
 
 
   var Typing = "la";
-  var htmlDone = '';// отмечаем? то что было отпечатано
+  var htmlDone = '';// отмечаем то, что было отпечатано розовым фоном
   var typedKey="";// нажатая кпопка
   var milisecArray=[]; // getMilisecToArraY(milisecArray)// массив, который хранит время нажатия кнопок
   var speedRate = 0; // 0-100
   var CPMMAX = 900; // typing speed, world record is around 900, Characters per minute
-  var timer;
-  var time;
-  var victory100=0; // нужно набрать 100 балов, чтобы пройти уровень
-  var WinTime = 5*1000; // 10 sec or 10 000 milisec
-  var typingSpeedGoal= 200;
-  var mistakesCounter = 0;
-  var WinState=0; // 1 is after victory
-  var currentLevel=0; // must increment each time  I win
+  var timer; // setInterval таймер
+  var time; // setInterval таймер
+  var victory100=0; // нужно набрать 100 балов, чтобы пройти уровень. Красная шкала
+  var WinTime = 5*1000; // время непрерывной быстрой печати для выигрыша уровня 10 sec or 10 000 milisec
+  var typingSpeedGoal= 200; // предустановленная цель печати знаков в минуту. Среднестатистическая
+  var mistakesCounter = 0; // счетчик ошибок
+  var WinState=0; // 1 в случае победы
+  var currentLevel=0; // счетчик прохойденных уровней
   var totalNumberOfLevels= textStr.length;
-  var updateRate = 100;
-  var soundKey = document.getElementById("soundKeyId");
-  var caret = document.getElementById("soundCaretId"); // mistake sound
-  var toCountAverageSpeedInputs= 8;
-    var correctColor = "#0073e6";
-    var wrongColor="#cc6600";
-    var taskColor="#4da6ff";
+  var updateRate = 100; // кол-во сверок данных в промежутке var WinTime
+  var soundKey = document.getElementById("soundKeyId");// звук печати
+  var caret = document.getElementById("soundCaretId"); // звук ошибки
+  var toCountAverageSpeedInputs= 8; // кол-во нажиманий клавиатуры для подсчета средней скорости печати
+    var correctColor = "#0073e6"; // цвет правильной печати 
+    var wrongColor="#cc6600";// цвет ошибки
+    var taskColor="#4da6ff";//
 var myReccomendationSpeed=200;
-        // $("#buttonSetRecomId").html("Играть на рекомедованной скорости 200 знаков в минуту!");
 
-  $("#check3Id").html(typingSpeedGoal);
-  $( "#inputId").attr("placeholder",typingSpeedGoal);
-    $("#gameCommentId").html("Печатай быстро и без ошибок!");
+$("#check3Id").html(typingSpeedGoal);
+$( "#inputId").attr("placeholder",typingSpeedGoal);
+$("#gameCommentId").html("Печатай быстро и без ошибок!");
   setcolortoKey(textStr[0][0][0][0],taskColor);
-
+    
+// Функция followTyping(бегунок) запускается после каждого нажатия клавиши клавиатуры. Она считывает нажатую кнопку, учиттывая текущую строку и место печати на строке.
+// Меняет отображение строки по ходу печати, издает звуки печати,обнаруживает ошибки печати,  управляет визуализацией клавиатуры. 
 //>>>>FOLLOWTYPING<<<<<<
  var followTyping = function(myStr, n, keyTyped){
-   var strDone  = myStr.slice(n-1,n);
-   var strThis = myStr.slice(n,n+1);
-   var strNext = myStr.slice(n+1);
+        var strDone  = myStr.slice(n-1,n);
+        var strThis = myStr.slice(n,n+1);
+        var strNext = myStr.slice(n+1);
 
-     setcolortoKey(strDone.slice(-1),"white"); //убрать эффект из предыдущей
-     setcolortoKey(strThis,taskColor);
-     changeFingers(strThis,strNext.slice(0,1));
+        setcolortoKey(strDone.slice(-1),"white"); //убрать эффект из предыдущей
+        setcolortoKey(strThis,taskColor);
+        changeFingers(strThis,strNext.slice(0,1));
 
-   var htmlThis = "<span id=\"spanThisId\">"+strThis+"</span>";
-   var htmlNext = "<span id=\"spanNextId\">"+strNext+"</span>";
+        var htmlThis = "<span id=\"spanThisId\">"+strThis+"</span>";
+        var htmlNext = "<span id=\"spanNextId\">"+strNext+"</span>";
 
-   if ( strDone == keyTyped){
-       soundKey.pause();
-        soundKey.currentTime = 0;
-        soundKey.play();
-     htmlDone+= "<span id=\"spanDoneCorrectId\">"+strDone+"</span>";
-     CSS_Plugcolor(keyTyped,correctColor);
-       }
-   else{ // MISTAKE
-       caret.pause();
-        caret.currentTime = 0;
-        caret.play();
-     mistakesCounter++;
-    htmlDone+= "<span id=\"spanDoneWrongId\">"+strDone+"</span>";
-    CSS_Plugcolor(keyTyped,wrongColor);
-       }
-    var htmlLine = htmlDone+htmlThis+htmlNext;
-  $("#wellId").html(htmlLine);
-
-  return;
- } ; // foolowTyping Funca
+       if ( strDone == keyTyped){ // если печатаем правильно
+           soundKey.pause();
+            soundKey.currentTime = 0;
+            soundKey.play();
+         htmlDone+= "<span id=\"spanDoneCorrectId\">"+strDone+"</span>";
+         CSS_Plugcolor(keyTyped,correctColor);
+           }
+       else{ // если ошиблись
+           caret.pause();
+            caret.currentTime = 0;
+            caret.play();
+         mistakesCounter++;
+        htmlDone+= "<span id=\"spanDoneWrongId\">"+strDone+"</span>";
+        CSS_Plugcolor(keyTyped,wrongColor);
+           }
+        var htmlLine = htmlDone+htmlThis+htmlNext; // текущее отображение строки, меняется при каждом клике.
+        $("#wellId").html(htmlLine);
+        return;
+    } ; // foolowTyping Funca
   //>>>>END FOLLOWTYPING<<<<<<
-
+    
+// Функция Reset : обнуляет счетчики и визуализации при обновлении уровня. входной параметр это уровень. 
 //>>>>RESET funca <<<<
  function reset(levelArg){
-     clearInterval(timerVisualScaleCPM);
-   victory100=0;
-   currentLevel = levelArg;
-   $("#wellId").html(textStr[levelArg][0][0]);
-   $("#well2Id").html(textStr[levelArg][1][0]);
-   $(".smallstuff").html(textStr[levelArg][1][0].slice(0,4));
-    pressCounter = 0;
-    htmlDone = '';
-   $("div#keyboardId button").css ("background", "white");
-    followTyping(textStr[levelArg][0][0], 0, '');
-
-    lineNum = 0;
-    milisecArray=[];
-
-    timerVisualScaleCPM = setInterval(function(){
-   visualScaleCPM();
-    },updateRate);
-
-    $("#well3Id").html(0);
-    WinState=0;
-
+        clearInterval(timerVisualScaleCPM); // прерывает регулярный анализ
+       victory100=0; // сбивает победную красную шкалу
+       currentLevel = levelArg; // устанавливает уровень
+       $("#wellId").html(textStr[levelArg][0][0]);// выводит строку для печати
+       $("#smallstuff").html(textStr[levelArg][1][0].slice(0,4));//показывает 3 первых символа следующей строки
+        pressCounter = 0;//обнуляет счетчик нажатия клавиш 
+        htmlDone = '';//очищает отображение строки
+       $("div#keyboardId button").css ("background", "white"); // очищает визуализацию клавиатуры
+        followTyping(textStr[levelArg][0][0], 0, ''); // настраивает бегунок в начало строки
+        lineNum = 0; // выводит первую строку текущего уровня
+        milisecArray=[]; // очищает массив с данными о времени кликов клавиатуры
+        timerVisualScaleCPM = setInterval(function(){// запускает новый аналитический регулрный блок
+                    visualScaleCPM();
+                },updateRate);
+        WinState=0;//обнуляет состояние победы в О
  }  //>>>>RESET funca<<<<
  //>>>>RESET funca<<<<
 
-
- //>>>>RESET<<<<
-  $("#resetId").on("click", function() {
-   reset(currentLevel);
-     }); // reset on clickrtrt
- //>>>>RESET<<<<
-
-  followTyping(textStr[currentLevel][0][0], 0,'');
+followTyping(textStr[currentLevel][0][0], 0,''); // первый запуск поводка для отображение начала строки
 
  function getKey(){ // возвращает нажатую на клавиутуре кнопку, символ.
     if (event.which == null) { // IE
-      if (event.keyCode < 32) {return null;}
-        else {// спец. символ
-      Typing+= String.fromCharCode(event.keyCode);
-      var currentSymbol = String.fromCharCode(event.keyCode);
-   //   $("#responseId").html(Typing);
-      return currentSymbol;
-        }
-  } else
+          if (event.keyCode < 32) {return null;}
+            else {// спец. символ
+          Typing+= String.fromCharCode(event.keyCode);
+          var currentSymbol = String.fromCharCode(event.keyCode);
+          return currentSymbol;
+            }
+          } else
 
-  if (event.which != 0 && event.charCode != 0) { // все кроме IE
-    if (event.which < 32) {return null;} // спец. символ
-    else
-    {
-      Typing+= String.fromCharCode(event.keyCode);
-   // $("#responseId").html(Typing);
-      var currentSymbol = String.fromCharCode(event.keyCode);
+          if (event.which != 0 && event.charCode != 0) { // все кроме IE
+            if (event.which < 32) {return null;} // спец. символ
+            else
+            {
+              Typing+= String.fromCharCode(event.keyCode);
+           // $("#responseId").html(Typing);
+              var currentSymbol = String.fromCharCode(event.keyCode);
 
-    return currentSymbol;
-    } // остальные
-  }
+            return currentSymbol;
+            } // остальные
+            }     
 
-  return null;
- } // getKey Funca
+            return null;
+        } // getKey Funca
  // >>>>getKey Funca<<<<<<<
 
-
+//Функция nextLine: заменяет текущую строку на следующуу при подходе бегунка к концу строки. Если строк в уровне больше нет, то возвращает первую строку и так по кругу.. 
+//Ссылается на текущий уровень. 
  //>>>>>>NEXTLINE<<<<<<<<<<<<<
- function nextLine(obj){ // loopStrings(textStr)   [currentLevel]
-    // caret.play();
-  if (lineNum+1< obj[currentLevel].length){
-    lineNum+=1;
-    htmlDone = '';
-   $("#wellId").html(obj[currentLevel][lineNum][0]);
-   if (lineNum+1< obj[currentLevel].length){
-      $("#well2Id").html(obj[currentLevel][lineNum+1][0]);
-       $(".smallstuff").html(obj[currentLevel][lineNum+1][0].slice(0,4));
+ function nextLine(obj){ 
+      if (lineNum+1< obj[currentLevel].length){//если еще есть строки в запасе
+            lineNum+=1; // выводит следующую
+            htmlDone = '';
+            $("#wellId").html(obj[currentLevel][lineNum][0]);//выводит новую строку
+            if (lineNum+1< obj[currentLevel].length){// проверяет уже через строку. если она есть то:
+                    $("#smallstuff").html(obj[currentLevel][lineNum+1][0].slice(0,4));//выводит 3 первые символа
+               }
+            else{// если через строку уже конце, то выводит самую первую строку
+                    $("#smallstuff").html(obj[currentLevel][0][0].slice(0,4));
+            }
+            pressCounter = 0;
+            followTyping(obj[currentLevel][lineNum][0], 0, '');//ставит бегунок на начало строки
+            return;
        }
-    else{
-     $("#well2Id").html(obj[currentLevel][0][0]);
-     $(".smallstuff").html(obj[currentLevel][0][0].slice(0,4));
-    }
-    pressCounter = 0;
-    //setcolortoKey(obj[currentLevel][lineNum][0][0],taskColor);
-    followTyping(obj[currentLevel][lineNum][0], 0, '');
-
-    return;
-   }
-   lineNum=0;
-   htmlDone = '';
-   $("#wellId").html(obj[currentLevel][lineNum][0]);
-   $("#well2Id").html(obj[currentLevel][lineNum+1][0]);
-   $(".smallstuff").html(obj[currentLevel][lineNum+1][0].slice(0,4));
-    pressCounter = 0;
-    followTyping(obj[currentLevel][lineNum][0], 0, '');
-
-   return;
+       lineNum=0;//это в случае, если след строки не существует
+       htmlDone = '';
+       $("#wellId").html(obj[currentLevel][lineNum][0]);
+       $("#smallstuff").html(obj[currentLevel][lineNum+1][0].slice(0,4));
+        pressCounter = 0;
+        followTyping(obj[currentLevel][lineNum][0], 0, '');
+       return;
  } //loopString
  //>>>>>>NEXTLINE<<<<<<<<<<<<<
 
-// >>>Creating timing array in miliseconds<<<
+// >>>Создаем массив времени нажимания кнопок в милисекундах
 function getMilisecToArray(arr){//записывает текущее время в массив в милисекундах
-  var d = new Date;
-  var t = d.getTime();
-  arr.push(t);
-}
+          var d = new Date;
+          var t = d.getTime();
+          arr.push(t);
+    }
   // >>>  getMilisecToArraY  <<<
+    
+//Функция getAverageSpeed: берет последние numOfPlugs(кол-во) элементы массива и считает среднее. В нашем случае он считает среднее время между нажатиям кнопок. 
+// >>>  getAverageSpeed  <<< //  возвращает скорость печати знаков в минуту
+ function  getAverageSpeed(arr,numOfPlugs){ //
+       if (arr.length<numOfPlugs){
+           return 0;
+       } // если не хватает данных для рассчета, ждем
+       var arrShort = [];//
+       for (var i=arr.length-numOfPlugs+1; i<arr.length;i++){
+            arrShort.push(arr[i]-arr[i-1]);//наполняем массив целевыми данными
+       } // for loop
+       var d = new Date;
+       var t = d.getTime();// сверяем текущее время, это нам понадобится
+       var typingPause = t-arr[arr.length-1];// смотрим паузу после последнего клика
+       var average = arrShort.reduce(function(a,b){
+           return a+b;
+       },0)/(numOfPlugs-1);//считаем среднюю скорость печати, но если !!
+       if (typingPause< average){ // если после печати возникла длинная пауза, то уменьшам среднюю скорость печати. 
+            return Math.round(60*1000/average);//возвращает кол-во знаков в минуту
+       }
+        average = (arrShort.reduce(function(a,b){return a+b;},0)+ typingPause)/(numOfPlugs);
+        return Math.round(60*1000/average); //возвращает кол-во знаков в минуту
 
-  // >>>  getAverageSpeed  <<< //  возвращает скорость печати в знаках в минуту
- function  getAverageSpeed(arr,numOfPlugs){ // arr  - это массив исходных данных, numOfPlugs - это кол-во элементов с конца массива для расчета скорости печати.
-   if (arr.length<numOfPlugs){return 0;}
-   //else {return 5;}
+    }
 
-   var arrShort = [];//arr.slice(arr.length-numOfPlugs);
-   for (var i=arr.length-numOfPlugs+1; i<arr.length;i++){
-     arrShort.push(arr[i]-arr[i-1]);
-   } // for loop
-  // alert(arrShort[0]+" "+arrShort[1]+" "+arrShort[2]+" "+arrShort[3]);
-   var d = new Date;
-   var t = d.getTime();
-
-   var typingPause = t-arr[arr.length-1];
-  // alert("typing pause"+typingPause);
-   var average = arrShort.reduce(function(a,b){return a+b;},0)/(numOfPlugs-1);
-   //alert("average of 5 is: "+ average);
-   if (typingPause< average){
-      return Math.round(60*1000/average);
-   }
-     average = (arrShort.reduce(function(a,b){return a+b;},0)+ typingPause)/(numOfPlugs);
-     return Math.round(60*1000/average);
-
- }
-  // >>>  getAverageSpeed  <<<
-
-// >>>  AdjustSpeedScale <<<
-function   adjustSpeedScale(frequencyMiliSec){
-  var bla = "5";
-   timer = setInterval(function() {
-  speedRate = Math.round(getAverageSpeed(milisecArray,4)/CPMMAX*100);
-    //bla+="5";
-   $("#well3Id").html(speedRate+"\%");
-  }, frequencyMiliSec);
-
- // clearInterval(timer)
-}
-// >>>  AdjustSpeedScale <<<
-
- adjustSpeedScale(500);
-
+    // Ф-ция ifIWonThisGame: запускается при прохождении уровня. Переводит на след уровень. Если все уровни пройдены, поздравляет с окончанием игры.  
 // >>>  ifIWonThisGame <<<
 function ifIWonThisGame(){
-  $("#wellId").html("Уровень пройден! Молодчина ты моя!");
-    $("#gameCommentId").html("Жжешь!");
- $(".smallstuff").html('');
-    $( "#progressRedId").attr("style","min-width: 1%; width:100\%");
-    $( "#progressRedId").html("100\%");
-  // clearInterval(time);
-  WinState=1;
-  if (currentLevel == totalNumberOfLevels-1){
-    $("#gameCommentId").html("Вы прошли ВСЮ ИГРУ!!!");
-    return;
-  }
-  currentLevel++;
-  var sec3 = 3;
-
-   $("#gameCommentId").html("Следующий уровень начнется через "+sec3+" сек");
-  var thisTimer = setInterval(function(){
-    sec3--;
- if (sec3==-1){
-      //ниже записываем промежутки быстрой печати для расчета рекоменд скорости
-    /* function getTimeIntervals(arr){
-         var arrMid=arr;
-         var res=[];
-         var a=0;
-         var b=0;
-        while (arrMid.length>2) {
-             a = arrMid.pop();
-             b = arrMid.pop();
-         res.push(a-b);
-           // alert("data  "+res);
+        $("#wellId").html("Уровень пройден! Молодец!");
+        $("#gameCommentId").html("Так держать!");
+        $("#smallstuff").html('');
+        $( "#progressRedId").attr("style","min-width: 1%; width:100\%");
+        $( "#progressRedId").html("100\%");
+        WinState=1;
+        if (currentLevel == totalNumberOfLevels-1){
+            $("#gameCommentId").html("Вы прошли ВСЮ ИГРУ!!!");
+            return;
         }
-         //alert("res length:  "+res.length);
-         //alert("milisec length:   "+arr.length);
-         return res;
-     }
-     function getAverageTypingSpeed(arr){
-         var res=getTimeIntervals(arr);
-         var res2=res.slice(-10);
-         var len=res2.length;
-         var Redu= res2.reduce(function(a,b){return a+b},0);
-        // alert("final res length:  "+ len);
-         //alert("res reduced:  "+Redu);
-         return Math.round(60000/Redu*len);
-     }
-     myReccomendationSpeed =getAverageTypingSpeed(milisecArray);
-     //alert(myReccomendationSpeed);
-     $("#buttonSetRecomId").html("Играть на рекомедованной для Вас скорости: "+myReccomendationSpeed+" знаков в минуту!");
-     */
-     //выше записываем промежутки быстрой печати для расчета рекоменд скорости
-
-      reset(currentLevel);
-      clearInterval(thisTimer);
-    }
-    else{
-      $("#gameCommentId").html("Следующий уровень начнется через "+sec3+" сек");
-    }
-
-  },1000);
-
-
+        currentLevel++;
+        var sec3 = 3;
+        $("#gameCommentId").html("Следующий уровень начнется через "+sec3+" сек");
+        var thisTimer = setInterval(function(){
+            sec3--;
+            if (sec3==-1){
+                  reset(currentLevel);
+                  clearInterval(thisTimer);
+            }
+            else{
+                    $("#gameCommentId").html("Следующий уровень начнется через "+sec3+" сек");
+            }
+        },1000);
 }
 // >>> end ifIWonThisGame <<<
 
-
+// Ф-ция visualScaleCPM: сверяет среднюю скорость печати speedRate = getAverageSpeed
+// На основании этих данных она двигает шкалы скорости печати и поддержки темпа печати. При наборе 100 баллов переводит на след уровень. 
  // >>>  visualScaleCPM in squares<<<
 function visualScaleCPM(){
-    var html = '';
-    var speedRate;
-  speedRate = getAverageSpeed(milisecArray,toCountAverageSpeedInputs);
-
-    function repeat(s, n){
-    var a = [];
-    while(a.length < n){
-        a.push(s);
-    }
-    return a.join('');
-} // repeat
-   //var step=0.05;
-   //var x ;
-    var xxx;
-    if (speedRate>=typingSpeedGoal){
-     // x = 20;
-     xxx=100;
-    }
-    else{
-    // x= Math.round(speedRate/typingSpeedGoal/step);
-      xxx=  Math.round(speedRate/typingSpeedGoal*100);
-    }
-    $( "#progressValuesId").attr("style","min-width: 1%; width:"+xxx+"\%");
-   //html=repeat("<span id=\"spanScaleId\">_</span><span> </span>", x);
-   //html+=repeat("<span id=\"spanScaleLowId\">_</span><span> </span>", 20-x);
-
-    //>>>> Local RED area fucntion  <<<<
-    adjustVictory100(speedRate/*,typingSpeedGoal*/,updateRate);
-    if (victory100>=100){
-      clearInterval(timerVisualScaleCPM); // last added
-      ifIWonThisGame();
-      return;//last added
-     // alert("We won!");
-     }
-   // var redStep = 0.125;
-    //var y;
-   // y= Math.round(victory100/100/redStep);
-
-    // if (y>8){
-     // y = 8;
-   // }
-    //>>>> Local RED area fucntion  <<<<
-     $( "#progressRedId").attr("style","min-width: 1%; width:"+victory100+"\%");
-    $( "#progressRedId").html(victory100+"\%");
-  // html+=repeat("<span id=\"spanHoldId\">___</span><span> </span>", y);
-   //html+=repeat("<span id=\"spanHoldLowId\">___</span><span> </span>", 8-y);
-   //$("#well5Id").html(html);
+        var html = '';
+        var speedRate;
+        speedRate = getAverageSpeed(milisecArray,toCountAverageSpeedInputs);//сред скорость печати
+        var xxx; // число для ввода в шкалу визуализации
+        if (speedRate>=typingSpeedGoal){
+            xxx=100; // если печатаем быстрее цели, то шкала заполненна на 100%
+        }
+        else{
+            xxx=  Math.round(speedRate/typingSpeedGoal*100);
+        }
+        $( "#progressValuesId").attr("style","min-width: 1%; width:"+xxx+"\%");//шкала слева
+        //>>>> Local RED area fucntion  <<<<
+        adjustVictory100(speedRate,updateRate);// обновляем баллы победы, 0_100
+        if (victory100>=100){ // если набрали 100 баллов
+              clearInterval(timerVisualScaleCPM); // last added
+              ifIWonThisGame();
+              return;//last added
+         }
+        //>>>> Local RED area fucntion  <<<<
+        $( "#progressRedId").attr("style","min-width: 1%; width:"+victory100+"\%");// шкала темпа справа
+        $( "#progressRedId").html(victory100+"\%");
   }
-
-// }
   // >>>  END visualScaleCPM in squares<<<
- var timerVisualScaleCPM = setInterval(function(){
-   visualScaleCPM();
+    
+ var timerVisualScaleCPM = setInterval(function(){ // запуск регулярной сверки данных, именно оно выявляет прохождение уровня
+    visualScaleCPM();
  },updateRate);
 
-
+//Ф-ция adjustVictory100 управляет баллами 0_100 победы. Если печатаем быстро, то добалвляет баллы, если ошибаемся, то срезает 30% баллов. 
   // >>>  adjustVictory100  <<<
-
-  function adjustVictory100 (typingSpeed/*,goalSpeed*/,rateOfUpdate){
-    var littleSteps = WinTime/rateOfUpdate;
-      if (victory100<0){
-        victory100=0;
-          $("#gameCommentId").html("Печатай быстро и без ошибок!");
-         }
-      if (typingSpeed>=typingSpeedGoal){
-      victory100+=100/littleSteps;
-      $("#gameCommentId").html("Молодец! Поддерживай этот темп печати!");
-      //arrOfQuickness.push(milisecArray[milisecArray.length-1]-milisecArray[milisecArray.length-2]); // добавляем скорост печати в массив рекоменд скорости
+  function adjustVictory100 (typingSpeed,rateOfUpdate){
+        var littleSteps = WinTime/rateOfUpdate;
+        if (victory100<0){
+            victory100=0;
+            $("#gameCommentId").html("Печатай быстро и без ошибок!");
         }
-      else {
-         // $("#gameCommentId").html("Расслабляемся?");
-        victory100-= 2*100/littleSteps;
-        if (victory100<0){
-        victory100=0;
-         }
-      }
-      if (mistakesCounter>0){
-          $("#gameCommentId").html("Ошибаешься, товарищ! Давай почище!");
-          var bka=setTimeout(function(){
-           $("#gameCommentId").html("Набирай скорость, но без ошибок!");
-          },2000);
-       victory100-= 30*mistakesCounter*100/littleSteps;
-        mistakesCounter=0;
-        if (victory100<0){
-        victory100=0;
-         }
-      }
-    return victory100;
-  } // >>>  END adjustVictory100  <<<
+        if (typingSpeed>=typingSpeedGoal){
+            victory100+=100/littleSteps;
+            $("#gameCommentId").html("Молодец! Поддерживай темп печати!");
+        }
+        else {
+            victory100-= 2*100/littleSteps;
+            if (victory100<0){
+                victory100=0;
+            }
+        }
+        if (mistakesCounter>0){
+            $("#gameCommentId").html("Не туда нажал! Бывает!");
+            var bka=setTimeout(function(){
+                $("#gameCommentId").html("Набирай скорость, но без ошибок!");
+                },2000);
+            victory100-= 30*mistakesCounter*100/littleSteps;
+            mistakesCounter=0;
+            if (victory100<0){
+                victory100=0;
+            }
+        }
+        return victory100;
+  } 
+// >>>  END adjustVictory100  <<<
 
-  // >>>  END adjustVictory100  <<<
-
-  // >>>  setGoalSpeed <<<
-   $("#buttonMinusId").on("click",function(){
-     typingSpeedGoal=typingSpeedGoal-10;
-     $( "#inputId").attr("placeholder",typingSpeedGoal);
-       document.getElementById("inputId").value =typingSpeedGoal;
+// >>>  setGoalSpeed <<< устанавливаем целевую скорость печати при помощи jquery
+$("#buttonMinusId").on("click",function(){
+    typingSpeedGoal=typingSpeedGoal-10;
+    $( "#inputId").attr("placeholder",typingSpeedGoal);
+    document.getElementById("inputId").value =typingSpeedGoal;
     $("#check3Id").html(typingSpeedGoal);
-       return;
-   });
-   $("#buttonPlusId").on("click",function(){
-     typingSpeedGoal=typingSpeedGoal+10;
-     $( "#inputId").attr("placeholder",typingSpeedGoal);
-       document.getElementById("inputId").value =typingSpeedGoal;
+    return;
+});
+    
+$("#buttonPlusId").on("click",function(){
+    typingSpeedGoal=typingSpeedGoal+10;
+    $( "#inputId").attr("placeholder",typingSpeedGoal);
+    document.getElementById("inputId").value =typingSpeedGoal;
     $("#check3Id").html(typingSpeedGoal);
-   // $("#buttonPlusId").removeClass('active');
-       return;
-   });
+    return;
+});
 
-  $("#buttonOkId").on("click",function(){
-     var inputValue= $( "#inputId").val();
+$("#buttonOkId").on("click",function(){
+    var inputValue= $( "#inputId").val();
     typingSpeedGoal = parseInt(inputValue);
     $( "#inputId").attr("placeholder",typingSpeedGoal);
     $("#check3Id").html(typingSpeedGoal);
-      return;
-   // reset(currentLevel);
-    });
+    return;
+});
 
 $("#buttonSetRecomId").on("click",function(){
     typingSpeedGoal=myReccomendationSpeed;
-     $( "#inputId").attr("placeholder",200);
-       document.getElementById("inputId").value =200;
+    $( "#inputId").attr("placeholder",200);
+    document.getElementById("inputId").value =200;
     $("#check3Id").html(200);
-       return;
-   });
+    return;
+});
+// >>>  END setGoalSpeed <<<
 
-
-  // >>>  END setGoalSpeed <<<
-
-
-
-
- //  группа функций, которые высвечивают нужные клавиши на клаиатуре
-// >>>   CSS_KeyPlug <<<
+//  группа функций, которые высвечивают нужные клавиши на клавиатуре
+    // >>>   CSS_KeyPlug <<<
 function CSS_Plugcolor(mySymbol,mycolor){// some Symbol like strin
     var numbarAscii = mySymbol.charCodeAt(0);
     var jquerString="\#"+"button_"+numbarAscii+"_Id";
-$(jquerString).css ("border", "2px solid "+mycolor);
-$(jquerString).trigger("click");
-//$(jquerString).css ("border-radius", "2px");
-//$(jquerString).css ("left", "3px");
-//$(jquerString).css ("down", "3px");
-
-var timer=setTimeout(function(){
-$(jquerString).css ("border", "");
-//setcolortoKey(mySymbol,taskColor);
-//$(jquerString).css ("right", "3px");
-//$(jquerString).css ("up", "3px");
-},500);
+    $(jquerString).css ("border", "2px solid "+mycolor);
+    $(jquerString).trigger("click");
+    var timer=setTimeout(function(){
+            $(jquerString).css ("border", "");
+        },500);
 }
-
 
 function setcolortoKey(mySymbol,mycolor){
         var numbarAscii = mySymbol.charCodeAt(0);
@@ -460,7 +347,6 @@ function setcolortoKey(mySymbol,mycolor){
     }
 
 function changeFingers(mySymbol,nextSymbol){
-   // alert(mySymbol.charCodeAt(0));
     var arrLeft='qwertasdfgzxcvb';
     var pathToImg="pictures/fingers/fingers_"+mySymbol.charCodeAt(0)+".png";
     if ( mySymbol.charCodeAt(0)=== 32 ){
@@ -472,94 +358,73 @@ function changeFingers(mySymbol,nextSymbol){
                 pathToImg="pictures/fingers/fingers_"+mySymbol.charCodeAt(0)+"_Right"+".png";
             }
         }
-
         }
     $("#fingersId").attr("src",pathToImg);
 }
-
-
 // >>>   END CSS_KeyPlug <<<
 
 // >>>   совушки <<<
-    var animalShifter = 1;
- var sovushkiTimer=setInterval(function(){
+var animalShifter = 1;
+var sovushkiTimer=setInterval(function(){
      if (victory100<=0){
         shiftAnimal();
-
     }
      else{
-      shiftAnimal();
-         var time1 = setTimeout(function(){
+        shiftAnimal();
+        var time1 = setTimeout(function(){
                         shiftAnimal();
                                 },250);
-     var time2 = setTimeout(function(){
+        var time2 = setTimeout(function(){
                         shiftAnimal();
                                 },500);
-    var time3 = setTimeout(function(){
+        var time3 = setTimeout(function(){
                         shiftAnimal();
                                 },750);
-
      }
      return;
-
  },1000);
     function shiftAnimal(){
       if (animalShifter ===1){
-       $("#animalShiftId").attr("src","pictures/sovi_1.png");
-        animalShifter=2;
+            $("#animalShiftId").attr("src","pictures/sovi_1.png");
+            animalShifter=2;
       }
         else{
-          $("#animalShiftId").attr("src","pictures/sovi_2.png");
-        animalShifter=1;
+            $("#animalShiftId").attr("src","pictures/sovi_2.png");
+            animalShifter=1;
         }
         return;
     }
-
 // >>>   END совушки<<<
 
-  //>>>>>>>>>>>>>>>>>>>>>>>>
+  //Что происходит, если нажать клавишу?
+    // записываем номер клика и время в массив. Двигаем бегунок. Переводим на след строку, когда нужно
   $(document).keypress(function() {
     if (WinState!=1){
-    // event.type должен быть keypress
-    if (getKey() === null){
-      return;
-    }
-    else{
-      pressCounter++;
-       /* soundKey.pause();
-        soundKey.currentTime = 0;
-        soundKey.play(); */
-      //CSS_Plugcolor(getKey());
-      getMilisecToArray(milisecArray);
-      $("#well4Id").html(getAverageSpeed(milisecArray,4));
-      followTyping(textStr[currentLevel][lineNum][0], pressCounter,getKey());
-      if (pressCounter === textStr[currentLevel][lineNum][0].length){
-        nextLine(textStr);
-      } // if
-
-    } // else
+            // event.type должен быть keypress
+        if (getKey() === null){
+            return;
+        }
+        else{
+              pressCounter++;
+              getMilisecToArray(milisecArray);
+              followTyping(textStr[currentLevel][lineNum][0], pressCounter,getKey());
+              if (pressCounter === textStr[currentLevel][lineNum][0].length){
+                    nextLine(textStr);
+              } // if
+        } // else
     }// if win state
-
   });// end of keycode
 
-  // >>>> Level Click Setup <<<<<<<
-
-  $("#level1Id").on("click", function() {
-   reset(0);
+// >>>> меняем уровни <<<<<<<
+$("#level1Id").on("click", function() {
+        reset(0);
      });
-    $("#level2Id").on("click", function() {
-   reset(1);
+$("#level2Id").on("click", function() {
+        reset(1);
      });
-    $("#level3Id").on("click", function() {
-   reset(2);
+$("#level3Id").on("click", function() {
+        reset(2);
      });
-
-
-
 // >>>> End Level Click Setup <<<<<<<
-
-
- //$("#responseId").html(Typing);
-
 
    }); // doc ready funca

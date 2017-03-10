@@ -1,3 +1,13 @@
+// Обзор функций
+// Цель - научиться быстро печатать. Прохождение уровня при наборе целевой скорости печати (200 знаков в минуту, по умолчанию) и поддержание этой скорости печати без ошибок в течении некоторого времени (10 сек примерно).
+// 1. ф-ция FOLLOWTYPING - бегунок, следит за набором текста, реагирует на ошибки.
+//2. ф-ция reset - очищает переменные при переходе на нужный уровень.
+//3/ ф-ция NEXTLINE - переключает строки внутри одного уровня, если строки закончились, начинает с первой заново по кругу.
+// 4 ф-ция getAverageSpeed - считывает среднюю скорость печати в знаках в минуту, учитывает последние 8 кликов+ интервал после последнего клика.  
+// 5 ф-ция ifIWonThisGame - при выигрыше переключает на следующий уровень
+// 6 ф-ция visualScaleCPM - запускается с повторением. Анализирует данные и на основании их меняет параметры: скорость печати, сколько осталось до прохождения уровня и др
+// 7 ф-ция adjustVictory100 - обновляет кол-во баллов. Нужно набрать 100, чтобы пройти уровень/ 
+// прочие ф-ции
 
 $(document).ready(function () {
 // textSTR = это массив с уровнями игры.
@@ -16,6 +26,35 @@ $(document).ready(function () {
                     ["dd jjkk kkdd fdfd jkjk dfjk dfjk kk"],
                     ["jk dfdf dfjj jjfd kkjj dfjk ddkd dk"]
                   ], // level 3
+                    [ // level 4
+                    ["ll ss ssll slsl lssl lsll ssl ss ls"],
+                    ["ll slsl llsslsll ssl ssll slsl ls ss"]
+                  ], // level 4
+                  [ // level 5
+                    ["jj ff kk dd ll ssssd df fj jk kl sdf sk"],
+                    ["ks jf kd lslfl kl js kd jf sdfllk kkj jf"]
+                  ], // level 5
+                  [ // level 6
+                    ["aa ;; ;;aa ;a;a a;;;a ;aa; a;aa a;"],
+                    [";; ;a;a aa;;a;aa ;;a ;;aa ;a;a a;; ;;"]
+                  ], // level 6
+                    [ // level 7
+                    ["ask dad all salads fall; lass as all"],
+                    ["add salsa jaff kad; flask lass sad s;"],
+                    ["ads fall alfa jak kaj dad ask llsd fk"]
+                  ], // level 7
+                    [ // level 8
+                    ["gggg hhhh gg hh ggg hhh ggh hggh hh gh"]
+                  ], // level 8
+                    [ // level 9
+                    ["glad glass gag had haha gal hal gaf hah"],
+                    ["haha gaga glad hala hal hasha shash gl"]
+                  ], // level 9
+                          [ // level 10
+                    ["glad dad had half a glass as salad; dad"],
+                    ["shall ask glass flags had glass ask shall"],
+                    ["flask had slash jaff"]
+                  ], // level 10
 
                 ];
   var pressCounter= 0; // счетчик печати символов в пределах одной строки
@@ -284,7 +323,7 @@ function visualScaleCPM(){
             var bka=setTimeout(function(){
                 $("#gameCommentId").html("Набирай скорость, но без ошибок!");
                 },2000);
-            victory100-= 30*mistakesCounter*100/littleSteps;
+            victory100-= 20*mistakesCounter*100/littleSteps;
             mistakesCounter=0;
             if (victory100<0){
                 victory100=0;
@@ -424,6 +463,27 @@ $("#level2Id").on("click", function() {
      });
 $("#level3Id").on("click", function() {
         reset(2);
+     });
+    $("#level4Id").on("click", function() {
+        reset(3);
+     });
+    $("#level5Id").on("click", function() {
+        reset(4);
+     });
+    $("#level6Id").on("click", function() {
+        reset(5);
+     });
+    $("#level7Id").on("click", function() {
+        reset(6);
+     });
+        $("#level8Id").on("click", function() {
+        reset(7);
+     });
+        $("#level9Id").on("click", function() {
+        reset(8);
+     });
+        $("#level10Id").on("click", function() {
+        reset(9);
      });
 // >>>> End Level Click Setup <<<<<<<
 

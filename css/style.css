@@ -168,5 +168,8 @@ div#keyboardId button:active {
     background: #00bfff;
 }
 #level1Id,#level2Id,#level3Id{
+    #border: 1px solid #00bfff;
+}
+#sidebarId > div{
     border: 1px solid #00bfff;
 }

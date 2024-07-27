@@ -91,7 +91,7 @@ var myReccomendationSpeed=200;
 
 $("#check3Id").html(typingSpeedGoal);
 $( "#inputId").attr("placeholder",typingSpeedGoal);
-$("#gameCommentId").html("Печатай быстро и без ошибок!");
+$("#gameCommentId").html("Print Fast and Clean!");
   setcolortoKey(textStr[0][0][0][0],taskColor);
     
 // Функция followTyping(бегунок) запускается после каждого нажатия клавиши клавиатуры. Она считывает нажатую кнопку, учиттывая текущую строку и место печати на строке.
@@ -242,19 +242,19 @@ function getMilisecToArray(arr){//записывает текущее время
     // Ф-ция ifIWonThisGame: запускается при прохождении уровня. Переводит на след уровень. Если все уровни пройдены, поздравляет с окончанием игры.  
 // >>>  ifIWonThisGame <<<
 function ifIWonThisGame(){
-        $("#wellId").html("Уровень пройден! Молодец!");
-        $("#gameCommentId").html("Так держать!");
+        $("#wellId").html("Level Completed!");
+        $("#gameCommentId").html("Keep up!");
         $("#smallstuff").html('');
         $( "#progressRedId").attr("style","min-width: 1%; width:100\%");
         $( "#progressRedId").html("100\%");
         WinState=1;
         if (currentLevel == totalNumberOfLevels-1){
-            $("#gameCommentId").html("Вы прошли ВСЮ ИГРУ!!!");
+            $("#gameCommentId").html("The End!!!");
             return;
         }
         currentLevel++;
         var sec3 = 3;
-        $("#gameCommentId").html("Следующий уровень начнется через "+sec3+" сек");
+        $("#gameCommentId").html("Next level in "+sec3+" sec");
         var thisTimer = setInterval(function(){
             sec3--;
             if (sec3==-1){
@@ -262,7 +262,7 @@ function ifIWonThisGame(){
                   clearInterval(thisTimer);
             }
             else{
-                    $("#gameCommentId").html("Следующий уровень начнется через "+sec3+" сек");
+                    $("#gameCommentId").html("Next level in  "+sec3+" sec");
             }
         },1000);
 }
@@ -306,11 +306,11 @@ function visualScaleCPM(){
         var littleSteps = WinTime/rateOfUpdate;
         if (victory100<0){
             victory100=0;
-            $("#gameCommentId").html("Печатай быстро и без ошибок!");
+            $("#gameCommentId").html("Print fast and clean!");
         }
         if (typingSpeed>=typingSpeedGoal){
             victory100+=100/littleSteps;
-            $("#gameCommentId").html("Молодец! Поддерживай темп печати!");
+            $("#gameCommentId").html("Nice! Keep up!");
         }
         else {
             victory100-= 2*100/littleSteps;
@@ -319,9 +319,9 @@ function visualScaleCPM(){
             }
         }
         if (mistakesCounter>0){
-            $("#gameCommentId").html("Не туда нажал! Бывает!");
+            $("#gameCommentId").html("Mistake...");
             var bka=setTimeout(function(){
-                $("#gameCommentId").html("Набирай скорость, но без ошибок!");
+                $("#gameCommentId").html("Increase your speed!");
                 },2000);
             victory100-= 20*mistakesCounter*100/littleSteps;
             mistakesCounter=0;
